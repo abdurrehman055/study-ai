@@ -101,90 +101,97 @@
 
 {% block scripts %}
 <script>
-if (!requireAuth()) { /* redirected */ }
-initSidebar();
+(function () {
+  if (!requireAuth()) return;   // stop — browser is already navigating to /login
+  initSidebar();
 
-const $ = id => document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
-async function loadStatus() {
-  try {
-    const t0   = performance.now();
-    const res  = await fetch('/health');
-    const ms   = Math.round(performance.now() - t0);
+  async function loadStatus() {
+    try {
+      const t0  = performance.now();
+      const res = await fetch('/health');
+      const ms  = Math.round(performance.now() - t0);
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    const data = await res.json();
+      const data = await res.json();
 
-    const apiOK = data.status === 'healthy';
-    const dbOK  = data.database === 'connected';
-    const allOK = apiOK && dbOK;
+      const apiOK = data.status === 'healthy';
+      const dbOK  = data.database === 'connected';
+      const allOK = apiOK && dbOK;
 
-    // Banner
-    $('status-banner').className = `status-banner ${allOK ? 'ok' : 'error'} fade-up-d1`;
-    $('banner-icon').className   = `bi bi-${allOK ? 'check-circle-fill' : 'exclamation-triangle-fill'}`;
-    $('banner-text').textContent = allOK ? 'All systems operational' : 'Service disruption detected — check status below';
+      // Banner
+      $('status-banner').className = `status-banner ${allOK ? 'ok' : 'error'} fade-up-d1`;
+      $('banner-icon').className   = `bi bi-${allOK ? 'check-circle-fill' : 'exclamation-triangle-fill'}`;
+      $('banner-text').textContent = allOK
+        ? 'All systems operational'
+        : 'Service disruption detected — check status below';
 
-    // API card
-    $('api-value').textContent  = apiOK ? 'Healthy' : 'Degraded';
-    $('api-dot').className      = `pulse-dot ${apiOK ? 'green' : 'red'}`;
-    $('api-label').textContent  = apiOK ? 'Operational' : 'Error';
-    $('api-label').style.color  = apiOK ? 'var(--green)' : 'var(--red)';
-    $('card-api').className     = `status-card ${apiOK ? 'ok' : ''}`;
+      // API card
+      $('api-value').textContent = apiOK ? 'Healthy' : 'Degraded';
+      $('api-dot').className     = `pulse-dot ${apiOK ? 'green' : 'red'}`;
+      $('api-label').textContent = apiOK ? 'Operational' : 'Error';
+      $('api-label').style.color = apiOK ? 'var(--green)' : 'var(--red)';
+      $('card-api').className    = `status-card ${apiOK ? 'ok' : ''}`;
 
-    // DB card
-    $('db-value').textContent   = dbOK ? 'Connected' : 'Disconnected';
-    $('db-dot').className       = `pulse-dot ${dbOK ? 'green' : 'red'}`;
-    $('db-label').textContent   = dbOK ? 'Connected' : 'Error';
-    $('db-label').style.color   = dbOK ? 'var(--green)' : 'var(--red)';
-    $('card-db').className      = `status-card ${dbOK ? 'ok' : ''}`;
+      // DB card
+      $('db-value').textContent = dbOK ? 'Connected' : 'Disconnected';
+      $('db-dot').className     = `pulse-dot ${dbOK ? 'green' : 'red'}`;
+      $('db-label').textContent = dbOK ? 'Connected' : 'Error';
+      $('db-label').style.color = dbOK ? 'var(--green)' : 'var(--red)';
+      $('card-db').className    = `status-card ${dbOK ? 'ok' : ''}`;
 
-    // Version
-    $('ver-value').textContent  = `v${data.version}`;
+      // Version
+      $('ver-value').textContent = `v${data.version}`;
 
-    // Response time
-    const rtFast = ms < 300;
-    const rtOK   = ms < 1000;
-    $('rt-value').textContent = `${ms} ms`;
-    $('rt-dot').className     = `pulse-dot ${rtFast ? 'green' : rtOK ? 'amber' : 'red'}`;
-    $('rt-label').textContent = rtFast ? 'Fast' : rtOK ? 'Acceptable' : 'Slow';
-    $('rt-label').style.color = rtFast ? 'var(--green)' : rtOK ? 'var(--amber)' : 'var(--red)';
+      // Response time
+      const rtFast = ms < 300;
+      const rtOK   = ms < 1000;
+      $('rt-value').textContent = `${ms} ms`;
+      $('rt-dot').className     = `pulse-dot ${rtFast ? 'green' : rtOK ? 'amber' : 'red'}`;
+      $('rt-label').textContent = rtFast ? 'Fast' : rtOK ? 'Acceptable' : 'Slow';
+      $('rt-label').style.color = rtFast ? 'var(--green)' : rtOK ? 'var(--amber)' : 'var(--red)';
 
-    // Timestamp
-    $('last-checked').textContent = new Date().toLocaleTimeString();
+      // Timestamp
+      $('last-checked').textContent = new Date().toLocaleTimeString();
 
-  } catch {
-    $('status-banner').className   = 'status-banner error fade-up-d1';
-    $('banner-icon').className     = 'bi bi-exclamation-triangle-fill';
-    $('banner-text').textContent   = 'Cannot reach API — server may be offline';
-    ['api-dot','db-dot'].forEach(id => $(id).className = 'pulse-dot red');
-    ['api-label','db-label'].forEach(id => { $(id).textContent = 'Unreachable'; $(id).style.color = 'var(--red)'; });
-    $('rt-value').textContent     = '—';
-    $('rt-dot').className         = 'pulse-dot red';
-    $('rt-label').textContent     = 'Unreachable';
-    $('rt-label').style.color     = 'var(--red)';
-    $('last-checked').textContent  = new Date().toLocaleTimeString();
+    } catch (err) {
+      const reason = err?.name === 'AbortError'
+        ? 'request aborted'
+        : err?.message || 'unknown error';
+      console.error('[status] loadStatus failed:', err);
+      $('status-banner').className   = 'status-banner error fade-up-d1';
+      $('banner-icon').className     = 'bi bi-exclamation-triangle-fill';
+      $('banner-text').textContent   = `Cannot reach API — ${reason}`;
+      ['api-dot', 'db-dot', 'rt-dot'].forEach(id => $(id).className = 'pulse-dot red');
+      ['api-label', 'db-label', 'rt-label'].forEach(id => {
+        $(id).textContent = 'Unreachable';
+        $(id).style.color = 'var(--red)';
+      });
+      $('rt-value').textContent     = '—';
+      $('last-checked').textContent = new Date().toLocaleTimeString();
+    }
   }
-}
 
-/* ── Auto-refresh countdown ──────────────────────── */
-let seconds = 30;
-const countEl = $('refresh-countdown');
+  let seconds   = 30;
+  const countEl = $('refresh-countdown');
 
-function tick() {
-  seconds--;
-  countEl.textContent = `Auto-refreshes in ${seconds}s`;
-  if (seconds <= 0) { loadStatus(); seconds = 30; }
-}
+  function tick() {
+    seconds--;
+    countEl.textContent = `Auto-refreshes in ${seconds}s`;
+    if (seconds <= 0) { loadStatus(); seconds = 30; }
+  }
 
-$('btn-refresh').addEventListener('click', () => {
+  $('btn-refresh').addEventListener('click', () => {
+    loadStatus();
+    seconds = 30;
+    countEl.textContent = `Auto-refreshes in ${seconds}s`;
+  });
+
   loadStatus();
-  seconds = 30;
   countEl.textContent = `Auto-refreshes in ${seconds}s`;
-});
-
-loadStatus();
-countEl.textContent = `Auto-refreshes in ${seconds}s`;
-setInterval(tick, 1000);
+  setInterval(tick, 1000);
+}());
 </script>
 {% endblock %}
