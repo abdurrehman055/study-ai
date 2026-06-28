@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Study Plans — StudyAI{% endblock %}
+
+{% block content %}
+<div class="page-header fade-up" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <div>
+    <div class="page-title">Study Plans</div>
+    <div class="page-subtitle">Manage and track all your AI-generated study plans</div>
+  </div>
+  <button class="btn-primary-sp" data-bs-toggle="modal" data-bs-target="#generateModal">
+    <i class="bi bi-stars"></i> Generate New Plan
+  </button>
+</div>
+
+<!-- Alert -->
+<div class="alert-sp hidden" id="page-alert"></div>
+
+<!-- Plans grid -->
+<div class="plans-grid" id="plans-grid">
+  <!-- Skeleton loaders -->
+  <div class="skeleton" style="height:200px;border-radius:14px"></div>
+  <div class="skeleton" style="height:200px;border-radius:14px"></div>
+  <div class="skeleton" style="height:200px;border-radius:14px"></div>
+</div>
+
+<!-- Empty state -->
+<div class="empty-state hidden" id="empty-state">
+  <div class="empty-icon"><i class="bi bi-journal-bookmark"></i></div>
+  <div class="empty-title">No study plans yet</div>
+  <div class="empty-sub">Generate your first AI-powered study plan to get started</div>
+  <button class="btn-primary-sp" data-bs-toggle="modal" data-bs-target="#generateModal">
+    <i class="bi bi-stars"></i> Generate your first plan
+  </button>
+</div>
+
+<!-- ── Generate Plan Modal ──────────────────────────── -->
+<div class="modal fade" id="generateModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:480px">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-stars" style="color:var(--pri-h);margin-right:6px"></i>Generate Study Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="alert-sp hidden" id="generate-alert"></div>
+
+        <form id="generate-form" novalidate>
+
+          <!-- Subjects -->
+          <div class="form-group">
+            <label class="form-label-sp">Subjects <span style="color:var(--t3);font-weight:400">(press Enter to add)</span></label>
+            <div class="tags-wrap" id="tags-wrap">
+              <input class="tags-input" id="tags-input" placeholder="e.g. Mathematics, Physics…" autocomplete="off">
+            </div>
+          </div>
+
+          <!-- Exam date -->
+          <div class="form-group">
+            <label class="form-label-sp" for="exam-date">Exam date</label>
+            <input type="date" id="exam-date" class="form-control-sp">
+          </div>
+
+          <!-- Daily hours -->
+          <div class="form-group">
+            <label class="form-label-sp">Daily study hours</label>
+            <div class="range-wrap">
+              <input type="range" id="hours-slider" min="1" max="12" step="0.5" value="3">
+              <span class="range-value" id="hours-value">3h</span>
+            </div>
+          </div>
+
+          <!-- Difficulty -->
+          <div class="form-group">
+            <label class="form-label-sp">Difficulty</label>
+            <div class="diff-picker">
+              <button type="button" class="diff-pill" data-value="Easy">Easy</button>
+              <button type="button" class="diff-pill" data-value="Medium">Medium</button>
+              <button type="button" class="diff-pill" data-value="Hard">Hard</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer" style="gap:8px">
+        <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="generate-form" class="btn-primary-sp" id="btn-generate">
+          <i class="bi bi-stars"></i> Generate Plan
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/plans.js"></script>
+{% endblock %}

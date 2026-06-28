@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — StudyAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="/static/css/main.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- ── Left: Live Preview Panel ─────────────────── -->
+  <div class="auth-brand">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Brand -->
+    <a href="/" class="brand-top">
+      <div class="logo-icon" style="width:32px;height:32px;font-size:15px"><i class="bi bi-stars"></i></div>
+      <span style="font-size:15px;font-weight:700;color:var(--t1)">Study<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">AI</span></span>
+    </a>
+
+    <!-- Tagline -->
+    <div class="brand-tagline">
+      <h2>Study smarter,<br><span>ace every exam</span></h2>
+      <p>AI generates your personalized daily schedule so you always know exactly what to study next.</p>
+    </div>
+
+    <!-- Preview widgets -->
+    <div class="preview-stack">
+
+      <!-- Streak widget -->
+      <div class="pwidget">
+        <div class="pwidget-header">
+          <div class="pwidget-title"><i class="bi bi-fire" style="color:var(--amber)"></i> Study Streak</div>
+          <span class="pwidget-badge amber">🔥 Active</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="font-size:36px;font-weight:800;letter-spacing:-2px;color:var(--amber);line-height:1">14</div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--t1)">day streak</div>
+            <div style="font-size:11.5px;color:var(--t3);margin-top:2px">Keep the momentum going!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly progress widget -->
+      <div class="pwidget">
+        <div class="pwidget-header">
+          <div class="pwidget-title"><i class="bi bi-graph-up" style="color:var(--cyan)"></i> Weekly Progress</div>
+          <span class="pwidget-badge cyan">68% done</span>
+        </div>
+        <div>
+          <div class="subj-row">
+            <span class="subj-name">Mathematics</span>
+            <div class="subj-bar"><div class="subj-fill" style="width:82%"></div></div>
+            <span class="subj-pct">82%</span>
+          </div>
+          <div class="subj-row">
+            <span class="subj-name">Physics</span>
+            <div class="subj-bar"><div class="subj-fill" style="width:64%"></div></div>
+            <span class="subj-pct">64%</span>
+          </div>
+          <div class="subj-row">
+            <span class="subj-name">Chemistry</span>
+            <div class="subj-bar"><div class="subj-fill" style="width:45%"></div></div>
+            <span class="subj-pct">45%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming exam widget -->
+      <div class="pwidget">
+        <div class="pwidget-header">
+          <div class="pwidget-title"><i class="bi bi-calendar-event" style="color:#b77ef8"></i> Upcoming Exam</div>
+          <span class="pwidget-badge purple">5 days left</span>
+        </div>
+        <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:8px">Physics Final</div>
+        <div style="height:4px;border-radius:100px;background:rgba(255,255,255,0.06);overflow:hidden">
+          <div style="width:72%;height:100%;background:var(--grad);border-radius:100px"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--t3)">
+          <span>72% studied</span><span>5 days remaining</span>
+        </div>
+      </div>
+
+      <!-- Today's tasks widget -->
+      <div class="pwidget">
+        <div class="pwidget-header">
+          <div class="pwidget-title"><i class="bi bi-list-check" style="color:var(--green)"></i> Today's Tasks</div>
+          <span class="pwidget-badge green">1/3 done</span>
+        </div>
+        <div>
+          <div class="ptask done"><i class="bi bi-check-circle-fill"></i> Calculus — Chapter 12</div>
+          <div class="ptask todo"><i class="bi bi-circle"></i> Wave Mechanics</div>
+          <div class="ptask todo"><i class="bi bi-circle"></i> Organic Synthesis</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Right: Login Form ──────────────────────── -->
+  <div class="auth-form-panel">
+    <div class="auth-box fade-up">
+
+      <div style="margin-bottom:28px">
+        <div class="auth-title">Welcome back</div>
+        <div class="auth-sub">Sign in to your StudyAI account</div>
+      </div>
+
+      <div class="alert-sp hidden" id="alert-box"></div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label-sp" for="email">Email address</label>
+          <input type="email" id="email" class="form-control-sp" placeholder="you@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label-sp" for="password">Password</label>
+          <input type="password" id="password" class="form-control-sp" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-primary-sp" style="width:100%;justify-content:center;padding:11px" id="btn-login">
+          <i class="bi bi-arrow-right-circle-fill"></i> Sign in
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        Don't have an account? <a href="/register">Create one free</a>
+      </div>
+
+      <!-- Features list -->
+      <div style="margin-top:28px;padding-top:22px;border-top:1px solid var(--bd)">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:12px">What you get</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--t2)">
+            <i class="bi bi-check-circle-fill" style="color:var(--green);font-size:13px;flex-shrink:0"></i>
+            AI-generated daily study schedules
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--t2)">
+            <i class="bi bi-check-circle-fill" style="color:var(--green);font-size:13px;flex-shrink:0"></i>
+            Progress tracking &amp; study streaks
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--t2)">
+            <i class="bi bi-check-circle-fill" style="color:var(--green);font-size:13px;flex-shrink:0"></i>
+            Exam countdowns &amp; smart reminders
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--t2)">
+            <i class="bi bi-check-circle-fill" style="color:var(--green);font-size:13px;flex-shrink:0"></i>
+            Adaptive difficulty planning
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script>
+redirectIfAuthed();
+
+const form    = document.getElementById('login-form');
+const alertEl = document.getElementById('alert-box');
+const btn     = document.getElementById('btn-login');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  hideAlert(alertEl);
+
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !password) { showAlert(alertEl, 'error', 'Please fill in all fields.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> Signing in…`;
+
+  try {
+    await apiLogin(email, password);
+    window.location.href = '/app/dashboard';
+  } catch (err) {
+    showAlert(alertEl, 'error', err.message);
+    btn.disabled = false;
+    btn.innerHTML = `<i class="bi bi-arrow-right-circle-fill"></i> Sign in`;
+  }
+});
+</script>
+</body>
+</html>

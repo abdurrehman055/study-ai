@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — StudyAI{% endblock %}
+
+{% block content %}
+
+<!-- Page header -->
+<div class="page-header fade-up" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <div>
+    <div class="page-title">Dashboard</div>
+    <div class="page-subtitle" id="dash-subtitle">Your study overview at a glance</div>
+  </div>
+  <a href="/app/plans" class="btn-primary-sp" style="font-size:13px">
+    <i class="bi bi-stars"></i> New Plan
+  </a>
+</div>
+
+<!-- Empty hero (hidden until JS confirms no plans) -->
+<div class="empty-hero fade-up" id="empty-hero" style="display:none">
+  <div class="empty-hero-icon"><i class="bi bi-journal-bookmark"></i></div>
+  <div class="empty-hero-title">Welcome to StudyAI</div>
+  <div class="empty-hero-sub">
+    Generate your first AI-powered study plan in seconds.<br>
+    Set your subjects, exam date, and let the AI do the rest.
+  </div>
+  <a href="/app/plans" class="btn-primary-sp" style="font-size:14px;padding:11px 22px">
+    <i class="bi bi-stars"></i> Generate your first plan
+  </a>
+</div>
+
+<!-- Stat cards -->
+<div class="stat-grid" id="stat-section">
+  <div class="stat-card fade-up">
+    <div class="stat-icon icon-cyan"><i class="bi bi-journal-bookmark-fill"></i></div>
+    <div>
+      <div class="stat-value" id="stat-total-plans">—</div>
+      <div class="stat-label">Total Plans</div>
+    </div>
+  </div>
+  <div class="stat-card fade-up-d1">
+    <div class="stat-icon icon-blue"><i class="bi bi-list-task"></i></div>
+    <div>
+      <div class="stat-value" id="stat-total-tasks">—</div>
+      <div class="stat-label">Total Tasks</div>
+    </div>
+  </div>
+  <div class="stat-card fade-up-d2">
+    <div class="stat-icon icon-green"><i class="bi bi-check-circle-fill"></i></div>
+    <div>
+      <div class="stat-value" id="stat-completed">—</div>
+      <div class="stat-label">Completed</div>
+    </div>
+  </div>
+  <div class="stat-card fade-up-d3">
+    <div class="stat-icon icon-amber"><i class="bi bi-hourglass-split"></i></div>
+    <div>
+      <div class="stat-value" id="stat-remaining">—</div>
+      <div class="stat-label">Remaining</div>
+    </div>
+  </div>
+</div>
+
+<!-- Overall progress -->
+<div class="overall-progress-wrap fade-up-d1" id="progress-section">
+  <div class="progress-row">
+    <span class="progress-title">
+      <i class="bi bi-graph-up" style="color:var(--cyan);margin-right:6px"></i>Overall Progress
+    </span>
+    <span class="progress-pct" id="overall-pct-label">—</span>
+  </div>
+  <div class="progress-sp thick">
+    <div class="fill" id="overall-progress-fill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- Lower grid -->
+<div class="dash-grid fade-up-d2">
+
+  <!-- Streak -->
+  <div class="dash-card">
+    <div class="dash-card-title">
+      <i class="bi bi-fire" style="color:var(--amber)"></i> Study Streak
+    </div>
+    <div class="streak-display">
+      <div class="streak-number" id="streak-number">—</div>
+      <div>
+        <div class="streak-label">day streak</div>
+        <div class="streak-sub">Complete at least one task per day to keep your streak alive.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming exam -->
+  <div class="dash-card">
+    <div class="dash-card-title">
+      <i class="bi bi-calendar-event" style="color:var(--cyan)"></i> Nearest Exam
+    </div>
+    <div class="streak-display">
+      <div class="exam-countdown" id="exam-days">—</div>
+      <div>
+        <div class="exam-label" id="exam-label">days until exam</div>
+        <div class="streak-sub">Stay consistent and review your plan each morning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent plans -->
+  <div class="dash-card" style="grid-column:1/-1">
+    <div class="dash-card-title" style="margin-bottom:0;display:flex;align-items:center">
+      <i class="bi bi-journal-text"></i> Recent Plans
+      <a href="/app/plans" class="btn-ghost" style="margin-left:auto;padding:4px 10px;font-size:12px">
+        View all <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+    <div style="margin-top:12px" id="recent-plans-list">
+      <div class="skeleton" style="height:44px;margin-bottom:6px"></div>
+      <div class="skeleton" style="height:44px;margin-bottom:6px"></div>
+      <div class="skeleton" style="height:44px"></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}
