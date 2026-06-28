@@ -2,6 +2,10 @@
 
 An AI-powered study planning platform that generates personalized study schedules, tracks progress, and helps students prepare efficiently for exams.
 
+**Live Demo:** https://study-ai-9qp9.onrender.com
+
+**API Docs:** https://study-ai-9qp9.onrender.com/docs
+
 ---
 
 ## Screenshots
@@ -34,16 +38,16 @@ An AI-powered study planning platform that generates personalized study schedule
 * AI-generated study plans powered by OpenAI GPT-4o-mini
 * Personalized schedules based on subjects, exam date, and study hours
 * Daily task generation and management
-* Progress tracking with analytics
+* Progress tracking and completion analytics
 * Study streak monitoring
-* Days until exam countdown
+* Exam countdown tracking
 * Plan regeneration
-* Task completion tracking
-* Dashboard with overall statistics
-* Status monitoring page
+* Task completion management
+* Dashboard with statistics
 * PostgreSQL persistence
-* Responsive dark-themed interface
 * Swagger API documentation
+* Responsive dark-themed interface
+* Render deployment
 
 ---
 
@@ -51,7 +55,7 @@ An AI-powered study planning platform that generates personalized study schedule
 
 ### Backend
 
-* Python
+* Python 3.12
 * FastAPI
 * PostgreSQL
 * SQLAlchemy
@@ -83,6 +87,30 @@ An AI-powered study planning platform that generates personalized study schedule
 
 ---
 
+## Live Application
+
+Frontend
+
+https://study-ai-9qp9.onrender.com
+
+Dashboard
+
+https://study-ai-9qp9.onrender.com/app/dashboard
+
+Plans
+
+https://study-ai-9qp9.onrender.com/app/plans
+
+Status
+
+https://study-ai-9qp9.onrender.com/app/status
+
+Swagger
+
+https://study-ai-9qp9.onrender.com/docs
+
+---
+
 ## Frontend Routes
 
 | Route             | Description      |
@@ -97,23 +125,17 @@ An AI-powered study planning platform that generates personalized study schedule
 
 ---
 
-## API Documentation
-
-http://localhost:8000/docs
-
----
-
 ## Local Setup
 
-### Clone repository
+Clone repository
 
 ```bash
-git clone https://github.com/yourusername/study-planner.git
+git clone https://github.com/abdurrehman055/study-ai.git
 
-cd study-planner
+cd study-ai
 ```
 
-### Create virtual environment
+Create virtual environment
 
 ```bash
 python -m venv venv
@@ -121,47 +143,41 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-### Install dependencies
+Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Create .env
+Create `.env`
 
 ```env
-OPENAI_API_KEY=your_key
+OPENAI_API_KEY=your_openai_key
 
 DATABASE_URL=your_postgresql_url
 
 SECRET_KEY=your_secret_key
 ```
 
-### Run migrations
+Run migrations
 
 ```bash
 alembic upgrade head
 ```
 
-### Start server
+Run application
 
 ```bash
 uvicorn main:app --reload
 ```
 
-Visit:
+Visit
 
 ```text
 http://localhost:8000
 ```
 
-Dashboard:
-
-```text
-http://localhost:8000/app/dashboard
-```
-
-Swagger:
+Swagger
 
 ```text
 http://localhost:8000/docs
@@ -172,7 +188,7 @@ http://localhost:8000/docs
 ## Project Structure
 
 ```text
-study-planner/
+study-ai/
 
 app/
 templates/
@@ -181,9 +197,7 @@ alembic/
 tests/
 
 main.py
-
 requirements.txt
-
 README.md
 ```
 
@@ -193,10 +207,12 @@ README.md
 
 * Google Calendar integration
 * Email reminders
-* Mobile responsive enhancements
+* AI recommendations
 * User profiles
-* AI study recommendations
-* SaaS subscription model
+* Pomodoro timer
+* Analytics dashboard
+* SaaS subscriptions
+* Team study groups
 
 ---
 
@@ -204,4 +220,4 @@ README.md
 
 Abdurrehman Masood
 
-Computer Engineering Student • COMSATS Lahore
+Computer Engineering Student — COMSATS Lahore
