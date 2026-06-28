@@ -60,6 +60,19 @@
     </div>
   </div>
 
+  <!-- Response Time -->
+  <div class="status-card">
+    <div class="status-icon-wrap icon-amber">
+      <i class="bi bi-speedometer2"></i>
+    </div>
+    <div class="status-name">Response Time</div>
+    <div class="status-value" id="rt-value">—</div>
+    <div class="status-indicator">
+      <div class="pulse-dot green" id="rt-dot"></div>
+      <span id="rt-label" style="color:var(--green)">Checking…</span>
+    </div>
+  </div>
+
 </div>
 
 <!-- Refresh row -->
@@ -95,7 +108,12 @@ const $ = id => document.getElementById(id);
 
 async function loadStatus() {
   try {
+    const t0   = performance.now();
     const res  = await fetch('/health');
+    const ms   = Math.round(performance.now() - t0);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
     const data = await res.json();
 
     const apiOK = data.status === 'healthy';
@@ -124,6 +142,14 @@ async function loadStatus() {
     // Version
     $('ver-value').textContent  = `v${data.version}`;
 
+    // Response time
+    const rtFast = ms < 300;
+    const rtOK   = ms < 1000;
+    $('rt-value').textContent = `${ms} ms`;
+    $('rt-dot').className     = `pulse-dot ${rtFast ? 'green' : rtOK ? 'amber' : 'red'}`;
+    $('rt-label').textContent = rtFast ? 'Fast' : rtOK ? 'Acceptable' : 'Slow';
+    $('rt-label').style.color = rtFast ? 'var(--green)' : rtOK ? 'var(--amber)' : 'var(--red)';
+
     // Timestamp
     $('last-checked').textContent = new Date().toLocaleTimeString();
 
@@ -131,8 +157,12 @@ async function loadStatus() {
     $('status-banner').className   = 'status-banner error fade-up-d1';
     $('banner-icon').className     = 'bi bi-exclamation-triangle-fill';
     $('banner-text').textContent   = 'Cannot reach API — server may be offline';
-    ['api-dot','db-dot'].forEach(id => $( id ).className = 'pulse-dot red');
+    ['api-dot','db-dot'].forEach(id => $(id).className = 'pulse-dot red');
     ['api-label','db-label'].forEach(id => { $(id).textContent = 'Unreachable'; $(id).style.color = 'var(--red)'; });
+    $('rt-value').textContent     = '—';
+    $('rt-dot').className         = 'pulse-dot red';
+    $('rt-label').textContent     = 'Unreachable';
+    $('rt-label').style.color     = 'var(--red)';
     $('last-checked').textContent  = new Date().toLocaleTimeString();
   }
 }
